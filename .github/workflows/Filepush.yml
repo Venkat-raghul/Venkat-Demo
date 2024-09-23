@@ -35,42 +35,42 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Set environment variables based on input
-        id: set_env_vars
-        run: |
-          if [ "${{ github.event.inputs.Environment }}" == "USPROD" ]; then
-            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value1" >> $GITHUB_ENV
-            echo "AZURE_SUBSCRIPTION_ID=value2" >> $GITHUB_ENV
-            echo "STORAGE_ACCOUNT=value3" >> $GITHUB_ENV
-          elif [ "${{ github.event.inputs.Environment }}" == "EUPROD" ]; then
-            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value4" >> $GITHUB_ENV
-            echo "AZURE_SUBSCRIPTION_ID=value5" >> $GITHUB_ENV
-            echo "STORAGE_ACCOUNT=value6" >> $GITHUB_ENV
-          elif [ "${{ github.event.inputs.Environment }}" == "APACPROD" ]; then
-            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value7" >> $GITHUB_ENV
-            echo "AZURE_SUBSCRIPTION_ID=value8" >> $GITHUB_ENV
-            echo "STORAGE_ACCOUNT=value9" >> $GITHUB_ENV
-          elif [ "${{ github.event.inputs.Environment }}" == "USPROD-SE" ]; then
-            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value10" >> $GITHUB_ENV
-            echo "AZURE_SUBSCRIPTION_ID=value11" >> $GITHUB_ENV
-            echo "STORAGE_ACCOUNT=value12" >> $GITHUB_ENV
-          elif [ "${{ github.event.inputs.Environment }}" == "EUPROD-SE" ]; then
-            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value13" >> $GITHUB_ENV
-            echo "AZURE_SUBSCRIPTION_ID=value14" >> $GITHUB_ENV
-            echo "STORAGE_ACCOUNT=value15" >> $GITHUB_ENV
-          elif [ "${{ github.event.inputs.Environment }}" == "CALATAMPROD" ]; then
-            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value16" >> $GITHUB_ENV
-            echo "AZURE_SUBSCRIPTION_ID=value17" >> $GITHUB_ENV
-            echo "STORAGE_ACCOUNT=value18" >> $GITHUB_ENV
-          else
-            echo "Error: Unknown environment '${{ github.event.inputs.Environment }}'."
-            exit 1
-          fi
+      # - name: Set environment variables based on input
+      #   id: set_env_vars
+      #   run: |
+      #     if [ "${{ github.event.inputs.Environment }}" == "USPROD" ]; then
+      #       echo "SERVICE_PRINCIPAL_CREDENTIALSID=value1" >> $GITHUB_ENV
+      #       echo "AZURE_SUBSCRIPTION_ID=value2" >> $GITHUB_ENV
+      #       echo "STORAGE_ACCOUNT=value3" >> $GITHUB_ENV
+      #     elif [ "${{ github.event.inputs.Environment }}" == "EUPROD" ]; then
+      #       echo "SERVICE_PRINCIPAL_CREDENTIALSID=value4" >> $GITHUB_ENV
+      #       echo "AZURE_SUBSCRIPTION_ID=value5" >> $GITHUB_ENV
+      #       echo "STORAGE_ACCOUNT=value6" >> $GITHUB_ENV
+      #     elif [ "${{ github.event.inputs.Environment }}" == "APACPROD" ]; then
+      #       echo "SERVICE_PRINCIPAL_CREDENTIALSID=value7" >> $GITHUB_ENV
+      #       echo "AZURE_SUBSCRIPTION_ID=value8" >> $GITHUB_ENV
+      #       echo "STORAGE_ACCOUNT=value9" >> $GITHUB_ENV
+      #     elif [ "${{ github.event.inputs.Environment }}" == "USPROD-SE" ]; then
+      #       echo "SERVICE_PRINCIPAL_CREDENTIALSID=value10" >> $GITHUB_ENV
+      #       echo "AZURE_SUBSCRIPTION_ID=value11" >> $GITHUB_ENV
+      #       echo "STORAGE_ACCOUNT=value12" >> $GITHUB_ENV
+      #     elif [ "${{ github.event.inputs.Environment }}" == "EUPROD-SE" ]; then
+      #       echo "SERVICE_PRINCIPAL_CREDENTIALSID=value13" >> $GITHUB_ENV
+      #       echo "AZURE_SUBSCRIPTION_ID=value14" >> $GITHUB_ENV
+      #       echo "STORAGE_ACCOUNT=value15" >> $GITHUB_ENV
+      #     elif [ "${{ github.event.inputs.Environment }}" == "CALATAMPROD" ]; then
+      #       echo "SERVICE_PRINCIPAL_CREDENTIALSID=value16" >> $GITHUB_ENV
+      #       echo "AZURE_SUBSCRIPTION_ID=value17" >> $GITHUB_ENV
+      #       echo "STORAGE_ACCOUNT=value18" >> $GITHUB_ENV
+      #     else
+      #       echo "Error: Unknown environment '${{ github.event.inputs.Environment }}'."
+      #       exit 1
+      #     fi
 
-          # Echo the environment variables
-          echo "Using SERVICE_PRINCIPAL_CREDENTIALSID: $SERVICE_PRINCIPAL_CREDENTIALSID"
-          echo "Using AZURE_SUBSCRIPTION_ID: $AZURE_SUBSCRIPTION_ID"
-          echo "Using STORAGE_ACCOUNT: $STORAGE_ACCOUNT"
+      #     # Echo the environment variables
+      #     echo "Using SERVICE_PRINCIPAL_CREDENTIALSID: $SERVICE_PRINCIPAL_CREDENTIALSID"
+      #     echo "Using AZURE_SUBSCRIPTION_ID: $AZURE_SUBSCRIPTION_ID"
+      #     echo "Using STORAGE_ACCOUNT: $STORAGE_ACCOUNT"
 
       - name: Setup factfiles input
         run: |
