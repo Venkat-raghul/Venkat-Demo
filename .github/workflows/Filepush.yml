@@ -33,7 +33,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: [4-core]
+    runs-on: self-hosted
     steps:
       - name: Set environment variables based on input
         id: set_env_vars
