@@ -1,3 +1,4 @@
+name: Push CSV to Azure Blob
 on:
   workflow_dispatch:
     inputs:
