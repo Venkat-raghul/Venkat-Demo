@@ -1,0 +1,121 @@
+on:
+  workflow_dispatch:
+    inputs:
+      Branch:
+        description: 'Input branch name here'
+        required: true
+        default: 'master'
+      Environment: 
+        description: 'Select Proper Environment' 
+        required: true
+        default: 'USPROD'
+        type: choice
+        options:
+          - 'USPROD'
+          - 'EUPROD'
+          - 'APACPROD'
+          - 'USPROD-SE'
+          - 'EUPROD-SE'
+          - 'CALATAMPROD'
+      Container_name:
+        description: 'Select Container Name'
+        required: true
+        default: 'aggengine-prod'
+        type: choice
+        options:
+          - 'aggengine-prod-se'
+          - 'aggengine-prod'
+      Factfile:
+        description: 'Choose Proper Factfile(s) to be uploaded-Comma seperated (* - To upload all csv files) - (datacubes_facts,fg_rms_facts,loyalty_facts,pqm_facts,scan_facts,scan_facts_uda,uux_facts,tlog_facts)'
+        required: true
+        default: 'datacubes_facts'
+
+jobs:
+  deploy:
+    runs-on: [4-core]
+    steps:
+      - name: Set environment variables based on input
+        id: set_env_vars
+        run: |
+          if [ "${{ github.event.inputs.Environment }}" == "USPROD" ]; then
+            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value1" >> $GITHUB_ENV
+            echo "AZURE_SUBSCRIPTION_ID=value2" >> $GITHUB_ENV
+            echo "STORAGE_ACCOUNT=value3" >> $GITHUB_ENV
+          elif [ "${{ github.event.inputs.Environment }}" == "EUPROD" ]; then
+            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value4" >> $GITHUB_ENV
+            echo "AZURE_SUBSCRIPTION_ID=value5" >> $GITHUB_ENV
+            echo "STORAGE_ACCOUNT=value6" >> $GITHUB_ENV
+          elif [ "${{ github.event.inputs.Environment }}" == "APACPROD" ]; then
+            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value7" >> $GITHUB_ENV
+            echo "AZURE_SUBSCRIPTION_ID=value8" >> $GITHUB_ENV
+            echo "STORAGE_ACCOUNT=value9" >> $GITHUB_ENV
+          elif [ "${{ github.event.inputs.Environment }}" == "USPROD-SE" ]; then
+            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value10" >> $GITHUB_ENV
+            echo "AZURE_SUBSCRIPTION_ID=value11" >> $GITHUB_ENV
+            echo "STORAGE_ACCOUNT=value12" >> $GITHUB_ENV
+          elif [ "${{ github.event.inputs.Environment }}" == "EUPROD-SE" ]; then
+            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value13" >> $GITHUB_ENV
+            echo "AZURE_SUBSCRIPTION_ID=value14" >> $GITHUB_ENV
+            echo "STORAGE_ACCOUNT=value15" >> $GITHUB_ENV
+          elif [ "${{ github.event.inputs.Environment }}" == "CALATAMPROD" ]; then
+            echo "SERVICE_PRINCIPAL_CREDENTIALSID=value16" >> $GITHUB_ENV
+            echo "AZURE_SUBSCRIPTION_ID=value17" >> $GITHUB_ENV
+            echo "STORAGE_ACCOUNT=value18" >> $GITHUB_ENV
+          else
+            echo "Error: Unknown environment '${{ github.event.inputs.Environment }}'."
+            exit 1
+          fi
+
+          # Echo the environment variables
+          echo "Using SERVICE_PRINCIPAL_CREDENTIALSID: $SERVICE_PRINCIPAL_CREDENTIALSID"
+          echo "Using AZURE_SUBSCRIPTION_ID: $AZURE_SUBSCRIPTION_ID"
+          echo "Using STORAGE_ACCOUNT: $STORAGE_ACCOUNT"
+
+      - name: Setup factfiles input
+        run: |
+          # Split the input into an array
+          IFS=',' read -r -a factfiles <<< "${{ github.event.inputs.Factfile }}"
+          echo "Selected Factfiles:"
+          for file in "${factfiles[@]}"; do
+            echo "- $file"
+            # Add your upload logic here
+            if [[ "$file" == "*" ]]; then
+              echo "Uploading all CSV files..."
+              # Logic to upload all CSV files (e.g., using a command)
+            else
+              echo "Uploading $file.csv..."
+              # Logic to upload the specific factfile (e.g., using a command)
+            fi
+          done   
+
+      # - name: Generate App Token
+      #   uses: actions/create-github-app-token@v1
+      #   id: app-token
+      #   with:
+      #     app-id: ${{ vars.RE_APP_ID }}
+      #     private-key: ${{ secrets.RE_TOKEN }}
+      #     owner: ${{ github.repository_owner }}
+
+      # - name: Checkout Repository
+      #   uses: actions/checkout@v2
+      #   with:
+      #     ref: ${{ github.ref }}
+      #     fetch-depth: 0
+      #     token: ${{ steps.app-token.outputs.token }}
+
+      # - name: Checkout PAPI Aggengine Repository
+      #   uses: actions/checkout@v2
+      #   with:
+      #     ref: ${{ github.event.inputs.Branch }}
+      #     fetch-depth: 0
+      #     token: ${{ steps.app-token.outputs.token }}
+
+      # - name: Azure Login
+      #   uses: azure/CLI@v1
+      #   with:
+      #     azcliversion: 2.42.0
+      #     inlineScript: |
+      #       az login --service-principal -u ${{ secrets[env.SP_ID] }} -p ${{ secrets[env.SP_SECRET] }} --tenant ${{ secrets[env.SP_TENANT] }} --output none
+      #       az account set --subscription ${{ env.AZURE_SUBSCRIPTION_ID }}
+      #       echo "Upload artifacts to Azure Blob"
+      #       az storage blob upload-batch --account-name ${{ env.STORAGE_ACCOUNT }} --destination ${{ github.event.inputs.Container_name }} --source main/resources/properties-template/factdata/${{ github.event.inputs.Factfile }}.csv --overwrite true
