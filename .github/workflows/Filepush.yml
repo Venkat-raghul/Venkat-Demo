@@ -27,7 +27,7 @@ on:
           - 'aggengine-prod-se'
           - 'aggengine-prod'
       Factfile:
-        description: 'Choose Proper Factfile(s) to be uploaded-Comma seperated (* - To upload all csv files) - (datacubes_facts,fg_rms_facts,loyalty_facts,pqm_facts,scan_facts,scan_facts_uda,uux_facts,tlog_facts)'
+        description: 'Choose Proper Factfile(s) to be uploaded with Comma seperated (datacubes_facts,fg_rms_facts,loyalty_facts,pqm_facts,scan_facts,scan_facts_uda,uux_facts,tlog_facts) (* - To upload all csv files)'
         required: true
         default: 'datacubes_facts'
 
